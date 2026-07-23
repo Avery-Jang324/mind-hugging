@@ -71,6 +71,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 "불확실한 미래 앞에서 불안한 건 자연스러운 일이에요. 지금 걷고 있는 이 길이 늦어 보여도, 당신만의 속도로 가고 있는 거예요. 🌱",
                 "아직 정해지지 않은 미래가 두렵더라도, 지금 이 순간 최선을 다하고 있는 당신을 믿어주세요. 🌿"
             ]
+        },
+        {
+            name: "힘듦지침",
+            keywords: ["힘들", "지쳐", "지친", "지침", "우울", "죽겠", "버거워", "버겁", "눈물", "울고싶", "울었"],
+            messages: [
+                "많이 힘드셨겠어요. 지금 그 마음, 억지로 괜찮은 척하지 않아도 돼요. 잠시 여기서 숨 고르고 가세요. 🌸",
+                "지칠 만큼 애써왔다는 뜻이겠죠. 잘 버텨온 스스로를 한 번쯤은 꼭 안아주세요. ☕",
+                "힘들다는 말, 그 자체로 충분한 이유가 돼요. 설명하지 않아도 괜찮으니 오늘은 그냥 좀 쉬어가요. 🍃"
+            ]
         }
     ];
 
@@ -94,9 +103,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return chosenMsg;
         }
 
-        // 매칭 안 될 때: 사용자가 적은 내용을 살짝 반영해서 성의 있게
+        // 매칭 안 될 때: ㅠㅠ, ㅜㅜ, ㅋㅋ 같은 자모/이모티콘을 걷어내고
+        // 남은 내용이 있을 때만 자연스럽게 인용, 없으면 그냥 공감 멘트로
+        const cleaned = userFeeling.trim()
+            .replace(/[ㅠㅜㅋㅎㅇㄷㅁ~!?.,]+/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
         const randomMsg = comfortMessages[Math.floor(Math.random() * comfortMessages.length)];
-        return `'${userFeeling.trim()}'(이)라는 일 때문에 힘드셨군요.\n\n${randomMsg}`;
+
+        if (cleaned.length >= 2) {
+            return `'${cleaned}' 때문에 마음이 쓰이셨군요.\n\n${randomMsg}`;
+        }
+        return `말로 다 설명하지 않아도 그 마음 알 것 같아요.\n\n${randomMsg}`;
     }
 
     // HTML 요소 가져오기
